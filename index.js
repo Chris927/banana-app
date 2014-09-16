@@ -6,7 +6,7 @@ var app = express();
 app.use(morgan('tiny'));
 
 app.post('/buy-bananas', function(req, res) {
-  console.log('hey, got yet another request. Let\'s responsd...');
+  console.log('hey, got yet another request. Let\'s respond...');
   var responseTimeInMillis = Math.random() * 200.0; // 100ms in the average
   if (Math.random() < 0.1) { // with a 10% chance we make it 10 times slower
     responseTimeInMillis *= 10.0;

@@ -3,15 +3,17 @@ var express = require('express'),
 
 var app = express();
 
-app.use(morgan('tiny'));
+app.use(morgan('tiny')); // log every request, including response time
 
 app.post('/buy-bananas', function(req, res) {
+
   console.log('hey, got yet another request. Let\'s respond...');
+
   var responseTimeInMillis = Math.random() * 200.0; // 100ms in the average
-  if (Math.random() < 0.1) { // with a 10% chance we make it 10 times slower
+  if (Math.random() < 0.1) { // with a 10% chance 10 times slower (nobody knows why)
     responseTimeInMillis *= 10.0;
   }
-  if (Math.random() < 0.05) {
+  if (Math.random() < 0.05) { // sometimes there are random failures
     throw new Error('some random failure');
   }
   setTimeout(function() {

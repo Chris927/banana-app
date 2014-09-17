@@ -2,8 +2,7 @@ var express = require('express'),
     morgan = require('morgan');
 
 var app = express();
-
-app.use(morgan('tiny')); // log every request, including response time
+app.use(morgan('tiny')); // logs every request, including response time
 
 app.post('/buy-bananas', function(req, res) {
 

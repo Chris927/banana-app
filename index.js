@@ -11,13 +11,10 @@ var timer = new metrics.Timer();
 var metricsServer = new metrics.Server(process.env.METRICS_PORT || 3001);
 metricsServer.addMetric('bananas', timer);
 
-var count = 0;
 app.use(function(req, res, next) {
   var start = Date.now();
   onFinished(req, function(err) {
     timer.update(Date.now() - start);
-    count++;
-    if ((count % 100) == 0) console.log('count', count);
   });
   next();
 });

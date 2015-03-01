@@ -2,10 +2,27 @@ var express = require('express'),
     morgan = require('morgan');
 
 var app = express();
+
+
 app.use(morgan('tiny')); // logs every request, including response time
 
 app.post('/buy-bananas', function(req, res) {
+  maybeSellBananasWhichTakesSomeTimeAndSometimesFails(req, res);
+});
 
+
+// Below the ugly details of the implementation
+//
+app.use(function(err, req, res, next) { // error handling
+  console.error(err.stack);
+  res.status(500).send('Oops! An error occurred, deal with it!');
+});
+
+var server = app.listen(process.env.PORT || 3000, function() {
+  console.log('server listening on port %d', server.address().port);
+});
+
+function maybeSellBananasWhichTakesSomeTimeAndSometimesFails(req, res) {
   console.log('hey, got yet another request. Let\'s respond...');
 
   var responseTimeInMillis = Math.random() * 200.0; // 100ms in the average
@@ -18,13 +35,4 @@ app.post('/buy-bananas', function(req, res) {
   setTimeout(function() {
     res.send('Okay, here are some bananas, after ' + responseTimeInMillis.toFixed(2) + 'ms delay');
   }, responseTimeInMillis);
-});
-
-app.use(function(err, req, res, next) { // error handling
-  console.error(err.stack);
-  res.status(500).send('Oops! An error occurred, deal with it!');
-});
-
-var server = app.listen(process.env.PORT || 3000, function() {
-  console.log('server listening on port %d', server.address().port);
-});
+}

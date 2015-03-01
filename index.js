@@ -1,25 +1,19 @@
 var express = require('express'),
-    morgan = require('morgan'),
-    onFinished = require('on-finished');
+    morgan = require('morgan');
 
 var app = express();
 
 
 app.use(morgan('tiny')); // logs every request, including response time
 
-var requestCount = 0, responseTimeSum = 0, maxResponseTime = 0, numCurrentRequests = 0;
+var requestCount = 0, responseTimeSum = 0;
 
 app.use(function(req, res, next) {
   var start = Date.now();
-  numCurrentRequests++;
   res.on('finish', function() {
     var duration = Date.now() - start;
     requestCount++;
     responseTimeSum += duration;
-    if (duration > maxResponseTime) maxResponseTime = duration;
-  });
-  onFinished(req, function(err) {
-    numCurrentRequests--;
   });
   next();
 });
@@ -28,8 +22,7 @@ app.get('/averageMetrics', function(req, res) {
   res.send({
     averageResponseTimeInMillis: responseTimeSum / requestCount,
     requestCount: requestCount,
-    maxResponseTimeInMillis: maxResponseTime,
-    numCurrentRequests: numCurrentRequests });
+  });
 });
 
 app.post('/buy-bananas', function(req, res) {

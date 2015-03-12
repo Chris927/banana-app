@@ -18,7 +18,7 @@ node index.js
 
 This will start an http server on port 3000.
 
-## What Does it To?
+## What Does it Do?
 
 It will start an http server on port 3000 (configurable via PORT environment
 variable) which will handle POST requests to `/buy-bananas`. In order to
